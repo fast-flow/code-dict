@@ -1,0 +1,32 @@
+{
+  "name": "code-dict",
+  "version": "0.1.0",
+  "description": "code dictionary",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fast-flow/code-dict.git"
+  },
+  "keywords": [
+    "code",
+    "dictionary",
+    "code-dict",
+    "code",
+    "dict",
+    "dict-code",
+    "dict",
+    "code"
+  ],
+  "author": "NimoChu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fast-flow/code-dict/issues"
+  },
+  "homepage": "https://github.com/fast-flow/code-dict#readme",
+  "dependencies": {
+    "extend": "^3.0.1"
+  }
+}
