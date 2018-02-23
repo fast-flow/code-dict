@@ -20,22 +20,20 @@ codeDict.addCode(
     }
 )
 console.log(
-    codeDict.get('sms', 'login')
+    codeDict.get('sms', 'login') // 1
 )
 
 console.log(
-    codeDict.get('sms', '1')
+    codeDict.get('sms', '1') // login
 )
 
 console.log(
-    codeDict.get('type', 'offline')
+    codeDict.get('type', 'offline') // 2
 )
 console.log(
-    codeDict.text('type', 'offline')
+    codeDict.text('type', 'offline') // 离线
 )
-// console.log(
-//     codeDict.get('sms', 'without')
-// )
-// console.log(
-//     codeDict.get('name', 'without')
-// )
+console.log(
+    codeDict.get('sms', 'without') // throw new Error('node_modules/code-dict: not find code (' + code + ') ')
+
+)
