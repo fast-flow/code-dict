@@ -1,13 +1,16 @@
 var extend = require('extend')
-var mapToString = function (item){ return String(item) }
+var codeMapToString = function (item){
+    var output = item.code? item.code: item
+    return String(output)
+}
 var hasRepeat = function (map, targetMap) {
     map = map || {}
-    var keys = Object.keys(map).map(mapToString)
-    var targetKeys = Object.keys(targetMap).map(mapToString)
+    var keys = Object.keys(map).map(codeMapToString)
+    var targetKeys = Object.keys(targetMap).map(codeMapToString)
     keys = keys.concat(targetKeys)
 
-    var values = Object.values(map).map(mapToString)
-    var targetValues = Object.values(targetMap).map(mapToString)
+    var values = Object.values(map).map(codeMapToString)
+    var targetValues = Object.values(targetMap).map(codeMapToString)
     values = values.concat(targetValues)
 
     var words = keys.concat(values)
@@ -25,9 +28,10 @@ var hasRepeat = function (map, targetMap) {
     })
     return repeatWord?repeatWord: false
 }
-var get = function(code, key) {
+var get = function(code, key, source) {
     var self = this
-    if (typeof self.map[code]) {
+    code = String(code)
+    if (typeof self.map[code] === 'undefined') {
         throw new Error('node_modules/code-dict: not find code (' + code + ') ')
     }
     var keys = Object.keys(self.map[code]).map(function (item) { return String(item) })
@@ -44,9 +48,16 @@ var get = function(code, key) {
             result = keys[values.indexOf(key)]
         }
     })
+    if (result.code) {
+        if (source) {
+            return result
+        }
+        return result.code
+    }
     return result
 
 }
+
 var map = {}
 var addCode = function(name, map) {
     var self = this
@@ -60,6 +71,9 @@ var addCode = function(name, map) {
 }
 module.exports = {
     "get": get,
+    "text": function (code, key) {
+        return this.get(code, key, true).text
+    },
     addCode: addCode,
     map: map
 }
