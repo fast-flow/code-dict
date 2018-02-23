@@ -37,6 +37,7 @@ var get = function(code, key, source) {
     }
     var keys = Object.keys(self.map[code]).map(function (item) { return String(item) })
     var values = Object.values(self.map[code]).map(codeMapToString)
+
     var mergeMap = keys.concat(values)
     var result = ''
     keys.some(function (item) {
@@ -49,14 +50,16 @@ var get = function(code, key, source) {
             result = keys[values.indexOf(key)]
         }
     })
-    if (result.code) {
-        if (source) {
-            return result
+    if (source) {
+        if (typeof result === 'string') {
+            return self.map[code][result]
         }
+        return result
+    }
+    if (result.code) {
         return result.code
     }
     return result
-
 }
 
 var map = {}
@@ -68,6 +71,12 @@ var addCode = function(name, map) {
     }
     var mergeMap = {}
     extend(true,mergeMap, self.map[name], map)
+    if (typeof mergeMap !== 'object') {
+        mergeMap = {
+            code: mergeMap,
+            text: false
+        }
+    }
     self.map[name] = mergeMap
 }
 module.exports = {

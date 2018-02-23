@@ -37,6 +37,9 @@ console.log(
     codeDict.text('type', 'offline') // 离线
 )
 console.log(
-    codeDict.get('sms', 'without') // throw new Error('node_modules/code-dict: not find code (' + code + ') ')
-
+    codeDict.text('type', '2') // 离线
 )
+// console.log(
+//     codeDict.get('sms', 'without')
+//     // throw new Error('node_modules/code-dict: not find code (' + code + ') ')
+// )
