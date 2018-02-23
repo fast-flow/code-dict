@@ -31,11 +31,12 @@ var hasRepeat = function (map, targetMap) {
 var get = function(code, key, source) {
     var self = this
     code = String(code)
+    key = String(key)
     if (typeof self.map[code] === 'undefined') {
         throw new Error('node_modules/code-dict: not find code (' + code + ') ')
     }
     var keys = Object.keys(self.map[code]).map(function (item) { return String(item) })
-    var values = Object.values(self.map[code]).map(function (item) { return String(item) })
+    var values = Object.values(self.map[code]).map(codeMapToString)
     var mergeMap = keys.concat(values)
     var result = ''
     keys.some(function (item) {

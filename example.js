@@ -31,6 +31,9 @@ console.log(
     codeDict.get('type', 'offline') // 2
 )
 console.log(
+    codeDict.get('type', '2') // offline
+)
+console.log(
     codeDict.text('type', 'offline') // 离线
 )
 console.log(
