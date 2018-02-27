@@ -45,3 +45,15 @@ console.log(
     codeDict.get('sms', 'without') // throw new Error('node_modules/code-dict: not find code (' + code + ') ')
 )
 ```
+
+你还可以遍历数据用于渲染
+
+```js
+Object.keys(dict.map.type).map(function (key, item) {
+    return {
+        $key: key,
+        code: item.code,
+        text: item.text
+    }
+})
+```
