@@ -1,89 +1,47 @@
-var extend = require('extend')
-var codeMapToString = function (item){
-    var output = item.code? item.code: item
-    return String(output)
-}
-var hasRepeat = function (map, targetMap) {
-    map = map || {}
-    var keys = Object.keys(map).map(codeMapToString)
-    var targetKeys = Object.keys(targetMap).map(codeMapToString)
-    keys = keys.concat(targetKeys)
-
-    var values = Object.values(map).map(codeMapToString)
-    var targetValues = Object.values(targetMap).map(codeMapToString)
-    values = values.concat(targetValues)
-
-    var words = keys.concat(values)
-    var repeatWord
-    var findRepeat = words.some(function (item, itemIndex) {
-        return words.some(function (word, wordIndex) {
-            if (itemIndex === wordIndex) {
-                return false
-            }
-            if (word === item) {
-                repeatWord = word
-                return true
-            }
-        })
-    })
-    return repeatWord?repeatWord: false
-}
-var get = function(code, key, source) {
+var extend = require('safe-extend')
+function CodeDict () {
     var self = this
-    code = String(code)
-    key = String(key)
-    if (typeof self.map[code] === 'undefined') {
-        throw new Error('node_modules/code-dict: not find code (' + code + ') ')
-    }
-    var keys = Object.keys(self.map[code]).map(function (item) { return String(item) })
-    var values = Object.values(self.map[code]).map(codeMapToString)
-
-    var mergeMap = keys.concat(values)
-    var result = ''
-    keys.some(function (item) {
-        if (item === key) {
-            result = self.map[code][key]
-        }
-    })
-    values.some(function (item) {
-        if (item === key) {
-            result = keys[values.indexOf(key)]
-        }
-    })
-    if (source) {
-        if (typeof result === 'string') {
-            return self.map[code][result]
-        }
-        return result
-    }
-    if (result.code) {
-        return result.code
-    }
-    return result
+    self.data = {}
 }
-
-var map = {}
-var addCode = function(name, map) {
+CodeDict.prototype.add = function (namespace, data) {
     var self = this
-    var repeat = hasRepeat(self.map[name], map)
-    if (repeat) {
-        throw new Error('node_modules/code-dict: addCode find repeat code ' + repeat)
+    if (typeof namespace !== 'string') {
+        throw new Error('node_modules/code-dict: code.add(namespace, data) namespace must be a string')
     }
-    var mergeMap = {}
-    extend(true,mergeMap, self.map[name], map)
-    if (typeof mergeMap !== 'object') {
-        mergeMap = {
-            code: mergeMap,
-            text: false
+    data = extend.clone(data)
+    if (['add'].includes(namespace)) {
+        throw new Error('node_modules/code-dict: code.add(namespace, data) namespace can\'t be "add"')
+    }
+    if (self.data[namespace]) {
+        throw new Error('node_modules/code-dict: code.add(namespace, data) namespace is existing!')
+    }
+    // abbreviation
+    Object.keys(data).forEach(function (key) {
+        var item = data[key]
+        if (typeof item !== 'object') {
+            item = {
+                code: item
+            }
+        }
+        item.key = key
+        data[key] = item
+    })
+    self.data[namespace] = data
+    self[namespace] = {
+        namespace: namespace,
+        key: function (key) {
+            var target = self.data[this.namespace]
+            return target[key]
+        },
+        code: function (code) {
+            var target = self.data[this.namespace]
+            var codeMap = {}
+            Object.keys(target).forEach(function (key) {
+                var item = target[key]
+                codeMap[String(item.code)] = item
+            })
+            return codeMap[String(code)]
         }
     }
-    self.map[name] = mergeMap
 }
-module.exports = {
-    "get": get,
-    "text": function (code, key) {
-        return this.get(code, key, true).text
-    },
-    addCode: addCode,
-    map: map
-}
+module.exports = new CodeDict()

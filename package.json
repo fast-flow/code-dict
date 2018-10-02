@@ -1,6 +1,6 @@
 {
   "name": "code-dict",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "code dictionary",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/fast-flow/code-dict#readme",
   "dependencies": {
-    "extend": "^3.0.1"
+    "safe-extend": "^3.0.5"
   }
 }
