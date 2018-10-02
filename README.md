@@ -12,16 +12,6 @@ dict.add('userStatus', {
         label: '禁用'
     }
 })
-// or abbreviation
-dict.add('payStatus', {
-    'normal': 0,
-    'disable': 1
-})
-
-
-dict.userStatus.key('normal') // {code:0, label: '正常', key: 'normal'}
-dict.userStatus.code(0) // {key: 'normal', label: '正常', code: 0}
-
 // filter response data
 function getUser (cb) {
     $.ajax({...}).done(function (res) {
@@ -31,7 +21,7 @@ function getUser (cb) {
                 status: 0
             }
         */
-        res.status = dict.userStatus.code(res.status).key
+        res.status = dict.userStatus.code(res.status)
         // res.status = 'normal'
         cb(res)
     })
@@ -48,7 +38,7 @@ getUser(function (res) {
 // replace request parmas
 function changeUserSettings (status) {
     var sendData = {
-        status: dict.userStatus.key(status).code
+        status: dict.userStatus.key(status)
     }
     /*
         sendData = {

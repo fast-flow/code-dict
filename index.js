@@ -29,18 +29,20 @@ CodeDict.prototype.add = function (namespace, data) {
     self.data[namespace] = data
     self[namespace] = {
         namespace: namespace,
-        key: function (key) {
+        key: function (key, full) {
             var target = self.data[this.namespace]
-            return target[key]
+            var output = target[key]
+            return full?output:output.code
         },
-        code: function (code) {
+        code: function (code, full) {
             var target = self.data[this.namespace]
             var codeMap = {}
             Object.keys(target).forEach(function (key) {
                 var item = target[key]
                 codeMap[String(item.code)] = item
             })
-            return codeMap[String(code)]
+            var output = codeMap[String(code)]
+            return full?output:output.key
         }
     }
 }
