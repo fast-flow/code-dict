@@ -29,12 +29,12 @@ CodeDict.prototype.add = function (namespace, data) {
     self.data[namespace] = data
     self[namespace] = {
         namespace: namespace,
-        key: function (key, full) {
+        code: function (key, full) {
             var target = self.data[this.namespace]
             var output = target[key]
             return full?output:output.code
         },
-        code: function (code, full) {
+        key: function (code, full) {
             var target = self.data[this.namespace]
             var codeMap = {}
             Object.keys(target).forEach(function (key) {
@@ -43,6 +43,14 @@ CodeDict.prototype.add = function (namespace, data) {
             })
             var output = codeMap[String(code)]
             return full?output:output.key
+        },
+        array: function (type) {
+            var target = self.data[this.namespace]
+            return Object.keys(target).map(function (key) {
+                var item = target[key]
+                if (!type) { return item }
+                else { return item[type]}
+            })
         }
     }
 }

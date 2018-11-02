@@ -16,13 +16,24 @@ dict.add('payStatus', {
     'disable': 1
 })
 console.log('========= default ===========')
-console.log( dict.userStatus.key('normal') ) // 0
-console.log( dict.userStatus.code(0) ) // normal
-console.log( dict.userStatus.key('disable') ) // 1
+console.log( dict.userStatus.code('normal') ) // 0
+console.log( dict.userStatus.key(0) ) // normal
+console.log( dict.userStatus.code('disable') ) // 1
 console.log('========= full ===========')
-console.log( dict.userStatus.key('normal', true) )
+console.log( dict.userStatus.code('normal', true) )
 // { code: 0, label: '正常', key: 'normal' }
-console.log( dict.userStatus.code(0, true) )
+console.log( dict.userStatus.key(0, true) )
 // { code: 0, label: '正常', key: 'normal' }
-console.log( dict.userStatus.key('disable', true) )
+console.log( dict.userStatus.code('disable', true) )
 // { code: 1, label: '禁用', key: 'disable' }
+console.log( dict.userStatus.array('code') )
+// [0, 1]
+console.log( dict.userStatus.array('key') )
+// ['normal', 'disable']
+console.log( dict.userStatus.array() )
+/*
+    [
+      { code: 0, label: '正常', key: 'normal' },
+      { code: 1, label: '禁用', key: 'disable' }
+    ]
+ */
